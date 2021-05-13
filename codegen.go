@@ -9,7 +9,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/mlogclub/simple/strcase"
+	"github.com/jmt99/formatter/strcase"
 )
 
 type GenerateStruct struct {

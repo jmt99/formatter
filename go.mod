@@ -1,4 +1,4 @@
-module github.com/mlogclub/simple
+module github.com/jmt99/formatter
 
 go 1.15
 
