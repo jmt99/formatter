@@ -25,6 +25,14 @@ func (q *QueryParams) getValueByColumn(column string) string {
 	return q.Ctx.FormValue(fieldName)
 }
 
+func (q *MQueryParams) getValueByColumn(column string) string {
+	if q.Ctx == nil {
+		return ""
+	}
+	fieldName := strcase.ToLowerCamel(column)
+	return q.Ctx.FormValue(fieldName)
+}
+
 func (q *QueryParams) EqByReq(column string) *QueryParams {
 	value := q.getValueByColumn(column)
 	if len(value) > 0 {
