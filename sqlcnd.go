@@ -2,6 +2,7 @@ package simple
 
 import (
 	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
 	"gorm.io/gorm"
 )
 
@@ -168,4 +169,26 @@ func (s *SqlCnd) Count(db *gorm.DB, model interface{}) int64 {
 		logrus.Error(err)
 	}
 	return count
+}
+
+// MONGO
+
+type MSqlCnd struct {
+	SelectCols []string     // 要查询的字段，如果为空，表示查询所有字段
+	Params     bson.M       // 参数
+	Orders     []OrderByCol // 排序
+	Paging     *Paging      // 分页
+}
+
+func (s *MSqlCnd) ToBson(query string, args interface{}) *MSqlCnd {
+	if s.Params == nil {
+		s.Params = make(bson.M)
+	}
+	s.Params[query] = args
+	return s
+}
+
+func (s *MSqlCnd) MEq(column string, args interface{}) *MSqlCnd {
+	s.ToBson(column, args)
+	return s
 }

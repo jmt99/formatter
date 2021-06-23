@@ -114,3 +114,42 @@ func (q *QueryParams) Page(page, limit int) *QueryParams {
 	}
 	return q
 }
+
+//  使用 MONGO
+type MQueryParams struct {
+	Ctx iris.Context
+	MSqlCnd
+}
+
+func (q *MQueryParams) MPageByReq() *MQueryParams {
+	if q.Ctx == nil {
+		return q
+	}
+	paging := GetPaging(q.Ctx)
+	q.MPage(paging.Page, paging.Limit)
+	return q
+}
+
+func MNewQueryParams(ctx iris.Context) *MQueryParams {
+	return &MQueryParams{
+		Ctx: ctx,
+	}
+}
+
+func (q *MQueryParams) MPage(page, limit int) *MQueryParams {
+	if q.Paging == nil {
+		q.Paging = &Paging{Page: page, Limit: limit}
+	} else {
+		q.Paging.Page = page
+		q.Paging.Limit = limit
+	}
+	return q
+}
+
+func (q *MQueryParams) MEqByReq(column string) *MQueryParams {
+	value := q.getValueByColumn(column)
+	if len(value) > 0 {
+		q.MEq(column, value)
+	}
+	return q
+}
