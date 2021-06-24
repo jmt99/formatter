@@ -192,3 +192,8 @@ func (s *MSqlCnd) MEq(column string, args interface{}) *MSqlCnd {
 	s.ToBson(column, args)
 	return s
 }
+
+func (s *MSqlCnd) MFq(column string, args interface{}) *MSqlCnd {
+	s.ToBson(column, bson.M{"$regex": args})
+	return s
+}
